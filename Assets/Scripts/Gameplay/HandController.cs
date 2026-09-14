@@ -3,13 +3,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 
-/// <summary>
-/// One per hand. Owns input, both grab modes, the pose history used for the throw, and haptics.
-/// No XR Interaction Toolkit - input comes straight from Input System XR bindings.
-///
-/// Grip    = close grab. Only picks up a ball already next to the hand, so dribbling works.
-/// Trigger = force grab. Spherecast out, then the ball flies to the hand and is auto-caught.
-/// </summary>
 public class HandController : MonoBehaviour
 {
     public enum Handedness
@@ -157,14 +150,12 @@ public class HandController : MonoBehaviour
     {
         if(m_held != null)
         {
-            FollowHand(m_held.Body);
+            FollowHand(m_held.RigidBody);
             return;
         }
 
         UpdateIncoming();
     }
-
-    // ---------------------------------------------------------------- pose history
 
     private void RecordPose()
     {
@@ -180,8 +171,6 @@ public class HandController : MonoBehaviour
             m_poseSamples.RemoveAt(0);
         }
     }
-
-    // ---------------------------------------------------------------- grabbing
 
     private void TryCloseGrab()
     {
@@ -276,7 +265,7 @@ public class HandController : MonoBehaviour
 
         Vector3 velocity = ((target - start) - (0.5f * Physics.gravity * time * time)) / time;
 
-        Rigidbody body = grabbable.Body;
+        Rigidbody body = grabbable.RigidBody;
         body.WakeUp();
         body.linearVelocity = velocity;
         body.angularVelocity = Vector3.zero;
@@ -325,8 +314,6 @@ public class HandController : MonoBehaviour
         m_incoming = null;
         SendHaptics(hapticAmplitude, hapticDuration);
     }
-
-    // ---------------------------------------------------------------- holding and release
 
     /// <summary>
     /// Drives the ball with velocity rather than parenting it, so it keeps colliding with the
@@ -463,8 +450,6 @@ public class HandController : MonoBehaviour
         return axis.normalized * (angle * Mathf.Deg2Rad / deltaTime);
     }
 
-    // ---------------------------------------------------------------- haptics
-
     private void SendHaptics(float amplitude, float duration)
     {
         if(amplitude <= 0f || duration <= 0f)
@@ -490,14 +475,14 @@ public class HandController : MonoBehaviour
         device.SendHapticImpulse(0, Mathf.Clamp01(amplitude), duration);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Transform target = HoldTarget;
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Transform target = HoldTarget;
 
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(target.position, m_closeGrabRadius);
+    //    Gizmos.color = Color.cyan;
+    //    Gizmos.DrawWireSphere(target.position, m_closeGrabRadius);
 
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawRay(m_holdPoint.position, m_holdPoint.forward * m_forceGrabRange);
-    }
+    //    Gizmos.color = Color.magenta;
+    //    Gizmos.DrawRay(m_holdPoint.position, m_holdPoint.forward * m_forceGrabRange);
+    //}
 }

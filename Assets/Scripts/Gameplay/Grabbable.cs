@@ -1,45 +1,30 @@
 using System;
 using UnityEngine;
 
-/// <summary>
-/// Anything a hand can pick up. Owns nothing about input - it only tracks who is holding it
-/// and restores its own physics state on release, so two hands can never fight over one ball.
-/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class Grabbable : MonoBehaviour
 {
     public event Action<Grabbable> Grabbed;
     public event Action<Grabbable> Released;
 
-    private Rigidbody m_body;
+    private Rigidbody m_rigidbody;
     private HandController m_holder;
     private float m_defaultLinearDamping;
     private float m_defaultAngularDamping;
     private bool m_defaultUseGravity;
 
-    public Rigidbody Body
-    {
-        get { return m_body; }
-    }
+    public Rigidbody RigidBody => m_rigidbody;
 
-    public bool IsHeld
-    {
-        get { return m_holder != null; }
-    }
+    public bool IsHeld => m_holder != null;
 
     private void Awake()
     {
-        m_body = GetComponent<Rigidbody>();
-        m_defaultLinearDamping = m_body.linearDamping;
-        m_defaultAngularDamping = m_body.angularDamping;
-        m_defaultUseGravity = m_body.useGravity;
+        m_rigidbody = GetComponent<Rigidbody>();
+        m_defaultLinearDamping = m_rigidbody.linearDamping;
+        m_defaultAngularDamping = m_rigidbody.angularDamping;
+        m_defaultUseGravity = m_rigidbody.useGravity;
     }
 
-    /// <summary>
-    /// Returns false when another hand already holds this object.
-    /// While held, gravity and damping are off so the velocity-follow in HandController
-    /// is not fighting them every step.
-    /// </summary>
     public bool TryGrab(HandController hand)
     {
         if(hand == null)
@@ -53,9 +38,9 @@ public class Grabbable : MonoBehaviour
         }
 
         m_holder = hand;
-        m_body.useGravity = false;
-        m_body.linearDamping = 0f;
-        m_body.angularDamping = 0f;
+        m_rigidbody.useGravity = false;
+        m_rigidbody.linearDamping = 0f;
+        m_rigidbody.angularDamping = 0f;
 
         if(Grabbed != null)
         {
@@ -73,11 +58,11 @@ public class Grabbable : MonoBehaviour
         }
 
         m_holder = null;
-        m_body.useGravity = m_defaultUseGravity;
-        m_body.linearDamping = m_defaultLinearDamping;
-        m_body.angularDamping = m_defaultAngularDamping;
-        m_body.linearVelocity = velocity;
-        m_body.angularVelocity = angularVelocity;
+        m_rigidbody.useGravity = m_defaultUseGravity;
+        m_rigidbody.linearDamping = m_defaultLinearDamping;
+        m_rigidbody.angularDamping = m_defaultAngularDamping;
+        m_rigidbody.linearVelocity = velocity;
+        m_rigidbody.angularVelocity = angularVelocity;
 
         if(Released != null)
         {

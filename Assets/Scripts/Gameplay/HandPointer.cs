@@ -1,13 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// In-headset aim pointer for force grab. Lives as a CHILD of the hand with local-space points,
-/// so it inherits the same late-latched controller pose the hand is rendered with - that is why
-/// it stays glued to the hand while a Debug.DrawRay computed in Update visibly lags behind it.
-///
-/// Colour is driven off HandController.Hovered, so the pointer can never promise a grab that
-/// would not happen.
-/// </summary>
 [RequireComponent(typeof(LineRenderer))]
 public class HandPointer : MonoBehaviour
 {

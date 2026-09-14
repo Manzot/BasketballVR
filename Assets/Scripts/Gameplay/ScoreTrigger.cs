@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ScoreTrigger : MonoBehaviour
@@ -5,6 +6,7 @@ public class ScoreTrigger : MonoBehaviour
     [SerializeField] private IntGameEvent m_scoreEvent;
     [SerializeField] private LayerMask m_ballLayer;
     private Collider m_validBall;
+    private Coroutine m_ballValidationRoutine;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,6 +33,16 @@ public class ScoreTrigger : MonoBehaviour
 
     public void AddValidBall(Collider validBall)
     {
+        if(m_ballValidationRoutine != null)
+            StopCoroutine(m_ballValidationRoutine);
+        
         m_validBall = validBall;
+        m_ballValidationRoutine = StartCoroutine(ResetValidBall());
+    }
+
+    private IEnumerator ResetValidBall()
+    {
+        yield return new WaitForSeconds(2f);
+        m_validBall = null;
     }
 }
