@@ -27,7 +27,8 @@ public class ScoreTrigger : MonoBehaviour
 
     private void AddScores(int bouncesCount)
     {
-        int scoresGained = bouncesCount <= 0 ? GameConstants.MaxScore : GameConstants.MaxScore / (bouncesCount * GameConstants.BouncePenalty);
+        int scoresGained = bouncesCount <= 1 ? GameConstants.MaxScore : GameConstants.MaxScore / ((bouncesCount -1) * GameConstants.BouncePenalty);
+        scoresGained = Mathf.Max(scoresGained, GameConstants.MinScore);
         m_scoreEvent?.Raise(scoresGained);
     }
 

@@ -372,10 +372,10 @@ MonoBehaviour:
   m_catchRadius: 0.5
   m_flightTimeout: 1.5
   m_debugLogging: 1
-  m_poseSampleCount: 10
-  m_fastestSamplesUsed: 3
-  m_throwMultiplier: 1.5
-  m_maxThrowSpeed: 20
+  m_poseSampleCount: 15
+  m_fastestSamplesUsed: 5
+  m_throwMultiplier: 1.4
+  m_maxThrowSpeed: 25
   m_grabAmplitude: 0.3
   m_grabDuration: 0.08
   m_catchAmplitude: 0.6
@@ -572,10 +572,10 @@ MonoBehaviour:
   m_catchRadius: 0.5
   m_flightTimeout: 1.5
   m_debugLogging: 1
-  m_poseSampleCount: 10
-  m_fastestSamplesUsed: 3
-  m_throwMultiplier: 1.5
-  m_maxThrowSpeed: 20
+  m_poseSampleCount: 15
+  m_fastestSamplesUsed: 5
+  m_throwMultiplier: 1.4
+  m_maxThrowSpeed: 25
   m_grabAmplitude: 0.3
   m_grabDuration: 0.08
   m_catchAmplitude: 0.6

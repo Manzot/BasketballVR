@@ -350,10 +350,10 @@ public class HandController : MonoBehaviour
         Vector3 angularVelocity;
         Vector3 linearVelocity = ComputeReleaseVelocity(out angularVelocity);
 
-        // Wrist flick: a spinning hand adds tangential speed at the ball's offset from the hand.
-        Vector3 lever = released.transform.position - HoldTarget.position;
-        linearVelocity += Vector3.Cross(angularVelocity, lever);
-
+        // The wrist-flick term (Cross(angularVelocity, lever)) was removed deliberately.
+        // The ball is velocity-driven toward the hand, so it always trails by a few centimetres -
+        // that lag was being used as the lever arm, which injected up to ~1.2 m/s of mostly
+        // upward, direction-varying noise into every throw. Spin still goes to the ball below.
         linearVelocity *= m_throwMultiplier;
 
         if(linearVelocity.magnitude > m_maxThrowSpeed)
